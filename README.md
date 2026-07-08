@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PassOp — Secure Password Manager
+
+A full-stack password manager built to securely store, retrieve, and manage credentials with strong encryption and authentication practices.
+
+## Features
+
+- 🔐 **AES-256-GCM Encryption** — All stored passwords are encrypted at rest using authenticated encryption, ensuring both confidentiality and integrity.
+- 🔑 **JWT Authentication with Refresh Token Rotation** — Access tokens are short-lived; refresh tokens rotate on use to reduce the risk of token theft/replay.
+- 🚦 **Rate Limiting** — Login and sensitive routes are protected against brute-force attacks using `rate-limiter-flexible`.
+- 📋 **CRUD for Credentials** — Add, view, and delete stored passwords through a clean dashboard.
+- 🎨 **Responsive UI** — Built with Tailwind CSS v4.
+
+## Tech Stack
+
+| Layer          | Technology                    |
+|----------------|--------------------------------|
+| Framework      | Next.js 14 (App Router)        |
+| Database       | MongoDB + Mongoose             |
+| Auth           | JWT (access + refresh tokens)  |
+| Encryption     | AES-256-GCM                    |
+| Rate Limiting  | rate-limiter-flexible          |
+| Styling        | Tailwind CSS v4                |
+
+## How It Works
+
+1. **Registration/Login** — Users sign up and log in; passwords are hashed, and JWT access + refresh tokens are issued.
+2. **Token Rotation** — On each refresh, the old refresh token is invalidated and a new one is issued, limiting the damage of a leaked token.
+3. **Storing Passwords** — Credentials submitted by the user are encrypted server-side with AES-256-GCM before being saved to MongoDB.
+4. **Retrieving Passwords** — Encrypted data is decrypted only after authentication, and only for the authenticated user's own records.
+5. **Rate Limiting** — Sensitive endpoints (like login) are throttled to prevent brute-force attempts.
 
 ## Getting Started
 
-First, run the development server:
+### Clone the repository
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+    git clone https://github.com/Rohitgarg423/Password-Manager.git
+    cd Password-Manager
+    npm install
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Create a `.env` file in the root with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    JWT_SECRET=your_jwt_secret
+    JWT_REFRESH_SECRET=your_refresh_secret
+    ENCRYPTION_KEY=your_32_byte_encryption_key
+    MONGODB_URI=your_mongodb_connection_string
 
-## Learn More
+### Run the dev server
 
-To learn more about Next.js, take a look at the following resources:
+    npm run dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Motivation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built as a portfolio project to demonstrate practical, production-style security patterns — encryption, token rotation, and rate limiting — rather than a toy CRUD app.
